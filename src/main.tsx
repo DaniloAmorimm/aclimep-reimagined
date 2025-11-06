@@ -1,9 +1,16 @@
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
-createRoot(document.getElementById("root")!).render(
-  <BrowserRouter basename="/aclimep-reimagined/">
-    <App />
-  </BrowserRouter>
+// ✅ IMPORTANTE: importe o BrowserRouter
+import { BrowserRouter } from "react-router-dom";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    {/* ✅ Defina o basename para GitHub Pages */}
+    <BrowserRouter basename="/aclimep-reimagined/">
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
 );
