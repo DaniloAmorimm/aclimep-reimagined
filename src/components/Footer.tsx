@@ -1,5 +1,5 @@
 import { Plane } from "lucide-react";
-import logo from "@/assets/logo_icone.png";
+import logo from "@/assets/aclimepa_logo_branco_90x90.png";
 
 export const Footer = () => {
   return (
@@ -11,7 +11,7 @@ export const Footer = () => {
               <img
                 src={logo}
                 alt="ACLIMEPA Logo"
-                className="h-[74px] w-[73px] object-contain"
+                className="h-[90px] w-[90px] object-contain"
               />
               <div>
                 <h3 className="font-bold text-xl">ACLIMEPA Brasil</h3>
