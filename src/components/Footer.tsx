@@ -1,5 +1,4 @@
 import { Plane } from "lucide-react";
-import Image from "next/image"
 
 export const Footer = () => {
   return (
@@ -9,10 +8,9 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <Image
-                src="/publics/icone.png"
+                src="/icone.png"
                 alt="ACLIMEPA Logo"
-                width={73}
-                height={74}
+                className="h-[74px] w-[73px] object-contain"
               />
               <div>
                 <h3 className="font-bold text-xl">ACLIMEPA Brasil</h3>
