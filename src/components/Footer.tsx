@@ -1,4 +1,5 @@
 import { Plane } from "lucide-react";
+import logo from "@/assets/logo_icone.png";
 
 export const Footer = () => {
   return (
@@ -8,7 +9,7 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="/assets/logo_icone.png"
+                src={logo}
                 alt="ACLIMEPA Logo"
                 className="h-[74px] w-[73px] object-contain"
               />
