@@ -8,7 +8,7 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="/icone.png"
+                src="/assets/logo_icone.png"
                 alt="ACLIMEPA Logo"
                 className="h-[74px] w-[73px] object-contain"
               />
