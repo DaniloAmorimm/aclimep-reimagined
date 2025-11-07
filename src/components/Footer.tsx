@@ -1,4 +1,5 @@
 import { Plane } from "lucide-react";
+import Image from "<img />"
 
 export const Footer = () => {
   return (
@@ -7,7 +8,11 @@ export const Footer = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <Plane className="h-8 w-8" />
+              <img
+                src="/assets/favico2.ico"
+                alt="ACLIMEPA Logo"
+                className="h-8 w-auto"
+              />
               <div>
                 <h3 className="font-bold text-xl">ACLIMEPA Brasil</h3>
                 <p className="text-sm text-primary-foreground/80">
