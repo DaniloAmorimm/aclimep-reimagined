@@ -38,7 +38,7 @@ export const Hero = () => {
             que realizam perícias de saúde em aeronautas junto à Agência Reguladora de Aviação 
             Brasileira e Estrangeira
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-6">
             <Button 
               size="lg" 
               variant="default"
@@ -59,7 +59,7 @@ export const Hero = () => {
         
         <button 
           onClick={() => scrollToSection('sobre')}
-          className="animate-bounce text-white/80 hover:text-white transition-colors"
+          className="animate-bounce text-white/80 hover:text-white transition-colors flex justify-center"
         >
           <ChevronDown className="h-12 w-12" />
        </button>
