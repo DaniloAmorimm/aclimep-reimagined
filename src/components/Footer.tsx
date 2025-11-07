@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <Image
+              <Img
                 src="/icone.png"
                 alt="ACLIMEPA Logo"
                 className="h-[74px] w-[73px] object-contain"
