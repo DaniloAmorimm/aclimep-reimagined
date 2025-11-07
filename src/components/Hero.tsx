@@ -59,11 +59,10 @@ export const Hero = () => {
         
         <button 
           onClick={() => scrollToSection('sobre')}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-          aria-label="Rolar para baixo"
+          className="animate-bounce text-white/80 hover:text-white transition-colors"
         >
-          <ChevronDown className="h-8 w-8" />
-        </button>
+          <ChevronDown className="h-12 w-12" />
+       </button>
       </div>
     </section>
   );
