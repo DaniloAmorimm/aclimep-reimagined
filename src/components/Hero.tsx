@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-aviation.jpg";
-import logo from "@/assets/logo_branco.png"; // <= AQUI: sua imagem do logo
+import logo from "@/assets/logo_branco.png"; 
 
 export const Hero = () => {
   const scrollToSection = (id: string) => {
