@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-aviation.jpg";
+import logo from "@/assets/logo_branco.png"; // <= AQUI: sua imagem do logo
 
 export const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -9,56 +10,65 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div 
+    <section className="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
+      {/* Background */}
+      <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${heroImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 via-blue-900/50 to-white/95" />
       </div>
-      
-      <div className="container relative z-10 px-4 py-20 text-center">
-        <div className="mx-auto max-w-4xl space-y-8 animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground leading-tight">
-            ACLIMEPA Brasil
-          </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 font-light italic">
-            Associação de Clínicas e Médicos Peritos em Aviação
-          </p>
-          <p className="text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto leading-relaxed">
-            Entidade associativa destinada a congregar clínicas médicas e médicos credenciados 
-            que realizam perícias de saúde em aeronautas junto à Agência Reguladora de Aviação 
-            Brasileira e Estrangeira
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Button 
-              size="lg" 
-              variant="default"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg"
-              onClick={() => scrollToSection('contato')}
-            >
-              Entre em Contato
-            </Button>
-            <Button 
-              size="lg" 
-              variant="hero"
-              onClick={() => scrollToSection('sobre')}
-            >
-              Saiba Mais
-            </Button>
-          </div>
-        </div>
+
+      {/* Content */}
+      <div className="relative z-10 container px-6 py-24 flex flex-col items-center max-w-5xl">
         
-        <button 
+        {/* LOGO CENTRAL */}
+        <img
+          src={logo}
+          alt="ACLIMEPA Brasil"
+          className="w-[260px] md:w-[340px] mx-auto drop-shadow-2xl"
+        />
+
+        <p className="text-lg md:text-xl text-white/90 font-light mt-6 italic">
+          Associação de Clínicas e Médicos Peritos em Aviação
+        </p>
+
+        <p className="text-base md:text-lg text-white/80 max-w-3xl mt-3 leading-relaxed">
+          Entidade associativa destinada a congregar clínicas médicas e médicos credenciados 
+          que realizam perícias de saúde em aeronautas junto à Agência Reguladora de Aviação 
+          Brasileira e Estrangeira.
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+          <Button 
+            size="lg"
+            className="bg-orange-500 hover:bg-orange-600 text-white px-8 shadow-lg"
+            onClick={() => scrollToSection('contato')}
+          >
+            Entre em Contato
+          </Button>
+
+          <Button 
+            size="lg"
+            variant="outline"
+            className="border-white text-white hover:bg-white/20 px-8"
+            onClick={() => scrollToSection('sobre')}
+          >
+            Saiba Mais
+          </Button>
+        </div>
+
+        {/* Scroll Down Arrow */}
+        <button
           onClick={() => scrollToSection('sobre')}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-          aria-label="Rolar para baixo"
+          className="absolute bottom-10 text-white/70 hover:text-white transition"
         >
-          <ChevronDown className="h-8 w-8" />
+          <ChevronDown className="h-10 w-10 animate-bounce" />
         </button>
       </div>
     </section>
