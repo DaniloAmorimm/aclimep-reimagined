@@ -38,7 +38,7 @@ export const Hero = () => {
             que realizam perícias de saúde em aeronautas junto à Agência Reguladora de Aviação 
             Brasileira e Estrangeira
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-6">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button 
               size="lg" 
               variant="default"
