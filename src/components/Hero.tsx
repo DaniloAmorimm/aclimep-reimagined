@@ -28,7 +28,7 @@ export const Hero = () => {
           <img
             src={logo}
             alt="ACLIMEPA Brasil"
-            className="w-[260px] md:w-[340px] mx-auto drop-shadow-2xl"
+            className="w-[260px] md:w-[300px] mx-auto drop-shadow-2xl"
           />
           <p className="text-xl md:text-2xl text-primary-foreground/90 font-light italic">
             Associação de Clínicas e Médicos Peritos em Aviação
