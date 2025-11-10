@@ -9,7 +9,11 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  base: "/aclimep-reimagined/",
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  build: {
+    sourcemap: true, // ✅ ADICIONE ISTO
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
