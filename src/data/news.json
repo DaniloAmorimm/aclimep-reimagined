@@ -1,11 +1,11 @@
 [
  {
-    title: "Novas Diretrizes da ANAC para 2024",
-    category: "Regulamentação",
-    date: "15 de Janeiro, 2024",
-    readTime: "5 min",
-    excerpt: "A ANAC publicou atualizações importantes nos requisitos para certificação médica aeronáutica. Conheça as principais mudanças e como elas afetam os procedimentos de perícia.",
-    content: `A Agência Nacional de Aviação Civil (ANAC) publicou uma série de atualizações cruciais nos requisitos para certificação médica aeronáutica que entrarão em vigor em 2024. Estas mudanças representam um marco importante na modernização dos procedimentos de perícia médica no Brasil.
+    "title": "Novas Diretrizes da ANAC para 2024",
+    "category": "Regulamentação",
+    "date": "15 de Janeiro, 2024",
+    "readTime": "5 min",
+    "excerpt": "A ANAC publicou atualizações importantes nos requisitos para certificação médica aeronáutica. Conheça as principais mudanças e como elas afetam os procedimentos de perícia.",
+    "content": "A Agência Nacional de Aviação Civil (ANAC) publicou uma série de atualizações cruciais nos requisitos para certificação médica aeronáutica que entrarão em vigor em 2024. Estas mudanças representam um marco importante na modernização dos procedimentos de perícia médica no Brasil."
 
 As principais alterações incluem:
 
@@ -20,12 +20,12 @@ As principais alterações incluem:
 Estes procedimentos visam alinhar o Brasil aos mais altos padrões internacionais de segurança aeronáutica, mantendo a competitividade e excelência do setor no cenário global.`
   },
   {
-    title: "Importância da Saúde Mental na Aviação",
-    category: "Artigo Técnico",
-    date: "08 de Janeiro, 2024",
-    readTime: "8 min",
-    excerpt: "Exploramos a crescente importância da avaliação psicológica na medicina aeronáutica e como isso contribui para a segurança de voo.",
-    content: `A saúde mental dos profissionais da aviação tem ganhado crescente atenção nos últimos anos, especialmente após incidentes que destacaram a necessidade de uma avaliação mais abrangente e contínua.
+    "title": "Importância da Saúde Mental na Aviação",
+    "category": "Artigo Técnico",
+    "date": "08 de Janeiro, 2024",
+    "readTime": "8 min",
+    "excerpt": "Exploramos a crescente importância da avaliação psicológica na medicina aeronáutica e como isso contribui para a segurança de voo.",
+    "content": "A saúde mental dos profissionais da aviação tem ganhado crescente atenção nos últimos anos, especialmente após incidentes que destacaram a necessidade de uma avaliação mais abrangente e contínua."
 
 O ambiente da aviação apresenta desafios únicos que podem impactar o bem-estar psicológico dos profissionais:
 
@@ -44,12 +44,12 @@ A medicina aeronáutica moderna reconhece que a aptidão para o voo vai além da
 É fundamental criar um ambiente onde os profissionais se sintam confortáveis para buscar ajuda sem medo de consequências em suas carreiras. A abordagem preventiva e o acompanhamento regular são essenciais para manter os mais altos padrões de segurança operacional.`
   },
   {
-    title: "Workshop: Atualizações em Cardiologia Aeronáutica",
-    category: "Eventos",
-    date: "02 de Janeiro, 2024",
-    readTime: "3 min",
-    excerpt: "Participe do nosso próximo workshop sobre os mais recentes avanços em avaliação cardiológica para aviadores. Inscrições abertas.",
-    content: `Estamos organizando um workshop exclusivo sobre Cardiologia Aeronáutica, reunindo os principais especialistas da área para discutir os avanços mais recentes em diagnóstico e avaliação cardiovascular de profissionais da aviação.
+    "title": "Workshop: Atualizações em Cardiologia Aeronáutica",
+    "category": "Eventos",
+    "date": "02 de Janeiro, 2024",
+    "readTime": "3 min",
+    "excerpt": "Participe do nosso próximo workshop sobre os mais recentes avanços em avaliação cardiológica para aviadores. Inscrições abertas.",
+    "content": "Estamos organizando um workshop exclusivo sobre Cardiologia Aeronáutica, reunindo os principais especialistas da área para discutir os avanços mais recentes em diagnóstico e avaliação cardiovascular de profissionais da aviação."
 
 Programação:
 - Data: 15 de Fevereiro, 2024
@@ -73,12 +73,12 @@ Inscrições limitadas. Certificado de participação incluso.
 Para mais informações e inscrições, entre em contato através dos nossos canais oficiais.`
   },
   {
-    title: "Telemedicina e Perícias Aeronáuticas",
-    category: "Tecnologia",
-    date: "20 de Dezembro, 2023",
-    readTime: "6 min",
-    excerpt: "Como a tecnologia está transformando o acompanhamento médico de profissionais da aviação, mantendo os altos padrões de segurança.",
-    content: `A integração da telemedicina nas práticas de medicina aeronáutica representa uma evolução significativa na forma como acompanhamos e cuidamos da saúde dos profissionais da aviação.
+    "title": "Telemedicina e Perícias Aeronáuticas",
+    "category": "Tecnologia",
+    "date": "20 de Dezembro, 2023",
+    "readTime": "6 min",
+    "excerpt": "Como a tecnologia está transformando o acompanhamento médico de profissionais da aviação, mantendo os altos padrões de segurança.",
+    "content": "A integração da telemedicina nas práticas de medicina aeronáutica representa uma evolução significativa na forma como acompanhamos e cuidamos da saúde dos profissionais da aviação."
 
 Aplicações da telemedicina na aviação:
 
@@ -97,12 +97,12 @@ Desafios e considerações:
 A ACLIMEPA Brasil tem investido em infraestrutura tecnológica para oferecer estes serviços mantendo os mais altos padrões de segurança e confidencialidade, seguindo todas as regulamentações da ANAC e do Conselho Federal de Medicina.`
   },
   {
-    title: "Prevenção de Fadiga em Tripulações",
-    category: "Segurança",
-    date: "15 de Dezembro, 2023",
-    readTime: "7 min",
-    excerpt: "Estudos recentes sobre gerenciamento de fadiga e sua relação com a aptidão médica para voo. Recomendações práticas para aviadores.",
-    content: `A fadiga é um dos fatores mais críticos que afetam o desempenho e a segurança na aviação. Compreender, prevenir e gerenciar a fadiga é essencial para manter a aptidão médica para o voo.
+    "title": "Prevenção de Fadiga em Tripulações",
+    "category": "Segurança",
+    "date": "15 de Dezembro, 2023",
+    "readTime": "7 min",
+    "excerpt": "Estudos recentes sobre gerenciamento de fadiga e sua relação com a aptidão médica para voo. Recomendações práticas para aviadores.",
+    "content": "A fadiga é um dos fatores mais críticos que afetam o desempenho e a segurança na aviação. Compreender, prevenir e gerenciar a fadiga é essencial para manter a aptidão médica para o voo."
 
 O que é fadiga aeronáutica?
 
@@ -140,12 +140,12 @@ Recomendações práticas:
 A ACLIMEPA Brasil oferece programas de orientação sobre gerenciamento de fadiga como parte integral da avaliação de aptidão médica.`
   },
   {
-    title: "Certificação para Drones: Novos Requisitos",
-    category: "Novidades",
-    date: "10 de Dezembro, 2023",
-    readTime: "4 min",
-    excerpt: "As novas exigências médicas para operadores de aeronaves remotamente pilotadas (drones) e o papel da medicina aeronáutica neste setor.",
-    content: `O crescimento exponencial da indústria de drones trouxe novos desafios e oportunidades para a medicina aeronáutica. A ANAC estabeleceu requisitos específicos de certificação médica para operadores de aeronaves remotamente pilotadas (RPA).
+    "title": "Certificação para Drones: Novos Requisitos",
+    "category": "Novidades",
+    "date": "10 de Dezembro, 2023",
+    "readTime": "4 min",
+    "excerpt": "As novas exigências médicas para operadores de aeronaves remotamente pilotadas (drones) e o papel da medicina aeronáutica neste setor.",
+    "content": "O crescimento exponencial da indústria de drones trouxe novos desafios e oportunidades para a medicina aeronáutica. A ANAC estabeleceu requisitos específicos de certificação médica para operadores de aeronaves remotamente pilotadas (RPA)."
 
 Quem precisa de certificação médica?
 
