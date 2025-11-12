@@ -186,7 +186,7 @@ Processo de certificação:
 A ACLIMEPA Brasil está credenciada para realizar exames médicos para operadores de drones, oferecendo um processo simplificado mas completo que atende todas as exigências da ANAC.
 
 O futuro da aviação inclui a integração crescente de operações tripuladas e não tripuladas, e a medicina aeronáutica evolui para acompanhar esta transformação.`
-  }
+  },
 {
     title: "2Novas Diretrizes da ANAC para 2024",
     category: "Regulamentação",
