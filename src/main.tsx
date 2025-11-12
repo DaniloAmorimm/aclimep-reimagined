@@ -11,7 +11,7 @@ import { HashRouter } from "react-router-dom";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     {/* ✅ Defina o basename para GitHub Pages */}
-    <HashRouter basename="/aclimep-reimagined/">
+    <HashRouter /*basename="/aclimep-reimagined/"*/>
       <App />
     </HashRouter>
   </React.StrictMode>
