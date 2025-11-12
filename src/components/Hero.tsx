@@ -35,8 +35,8 @@ export const Hero = () => {
           </p>
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto leading-relaxed">
             Entidade associativa destinada a congregar clínicas médicas e médicos credenciados 
-            que realizam perícias de saúde em aeronautas junto à Agência Reguladora de Aviação 
-            Brasileira e Estrangeira
+            que realizam perícias de saúde em aeronavegantes junto à Agência Reguladora de Aviação 
+            Brasileira e Estrangeiras
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
             <Button 
