@@ -36,7 +36,7 @@ export const ContactForm = () => {
     );
     
     // Abrir cliente de email
-    window.location.href = `mailto:contato@aclimepa.com.br?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:contato@aclimepa.com?subject=${subject}&body=${body}`;
     
     toast({
       title: "Abrindo cliente de email",
@@ -117,7 +117,7 @@ export const ContactForm = () => {
                   <div>
                     <h3 className="font-semibold mb-2 text-foreground">Email</h3>
                     <a href="mailto:contato@aclimepa.com.br" className="text-muted-foreground hover:text-primary transition-colors">
-                      contato@aclimepa.com.br
+                      contato@aclimepa.com
                     </a>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export const ContactForm = () => {
                   <Phone className="w-6 h-6 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold mb-2 text-foreground">Telefone</h3>
-                    <p className="text-muted-foreground">(91) 3222-6397</p>
+                    <p className="text-muted-foreground">(11) 1111-1111</p>
                   </div>
                 </div>
               </CardContent>
@@ -143,8 +143,9 @@ export const ContactForm = () => {
                   <div>
                     <h3 className="font-semibold mb-2 text-foreground">Endereço</h3>
                     <p className="text-muted-foreground">
-                      Belém, Pará<br />
-                      Brasil
+                        Rua Tamoios 182, 1º andar<br />
+                        CEP 04630-001<br />
+                        Jardim Aeroporto - São Paulo, SP
                     </p>
                   </div>
                 </div>
@@ -156,12 +157,12 @@ export const ContactForm = () => {
                 <h3 className="font-semibold mb-4 text-foreground">Redes Sociais</h3>
                 <div className="flex gap-3">
                   <Button variant="outline" size="icon" asChild>
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.facebook.com/peritosemaviacao/groups" target="_blank" rel="noopener noreferrer">
                       <Facebook className="w-5 h-5" />
                     </a>
                   </Button>
                   <Button variant="outline" size="icon" asChild>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.instagram.com/aclimepabrasil/" target="_blank" rel="noopener noreferrer">
                       <Instagram className="w-5 h-5" />
                     </a>
                   </Button>
