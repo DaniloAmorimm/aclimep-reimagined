@@ -266,7 +266,7 @@ As principais alterações incluem:
 4. Periodicidade de exames: Ajustes nas frequências de renovação de certificados médicos para diferentes categorias de profissionais.
 
 Estes procedimentos visam alinhar o Brasil aos mais altos padrões internacionais de segurança aeronáutica, mantendo a competitividade e excelência do setor no cenário global.`
-  },
+  }
 ];
 
 export const News = () => {
