@@ -11,21 +11,24 @@ const navLinks = [
   { to: "/faq", label: "FAQ" },
 ];
 
-const navigate = useNavigate();
+export const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-const scrollToContact = () => {
-  if (location.pathname === "/") {
-    const element = document.getElementById("contato");
-    element?.scrollIntoView({ behavior: "smooth" });
-  } else {
-    navigate("/"); // navega para a home sem reload
-    setTimeout(() => {
+  const scrollToContact = () => {
+    if (location.pathname === "/") {
       const element = document.getElementById("contato");
       element?.scrollIntoView({ behavior: "smooth" });
-    }, 500);
-  }
-  setIsOpen(false);
-};
+    } else {
+      navigate("/"); // navega para a home sem reload
+      setTimeout(() => {
+        const element = document.getElementById("contato");
+        element?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+    setIsOpen(false);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
