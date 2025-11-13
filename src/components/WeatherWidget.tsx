@@ -1,63 +1,107 @@
 import { useEffect, useState } from "react";
 
 interface WeatherData {
-  city: string;
-  max: number;
-  min: number;
-  icon: string;
+  temperature: number;
+  windspeed: number;
+  weathercode: number;
 }
 
-export default function WeatherWidget() {
-  const [data, setData] = useState<WeatherData | null>(null);
+interface LocationData {
+  city: string;
+  latitude: number;
+  longitude: number;
+}
 
+const WeatherWidget = () => {
+  const [location, setLocation] = useState<LocationData | null>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Converte código do Open-Meteo para um emoji simples
+  const getWeatherIcon = (code: number) => {
+    if (code === 0) return "☀️"; // limpo
+    if (code <= 3) return "⛅"; // nublado leve
+    if (code <= 55) return "🌧️"; // chuva
+    if (code <= 65) return "🌧️"; // chuva moderada
+    if (code <= 75) return "❄️"; // neve
+    if (code <= 95) return "⛈️"; // tempestade
+    return "🌤️";
+  };
+
+  // 1. Buscar localização por IP
   useEffect(() => {
-    async function load() {
+    const fetchLocation = async () => {
       try {
-        // 1) Detectar localização via IPWHO.IS
-        const ipRes = await fetch("https://ipwho.is/");
-        const ipData = await ipRes.json();
+        const res = await fetch("https://ipwho.is/");
+        const data = await res.json();
 
-        if (!ipData.success) return;
-
-        const city: string = ipData.city;
-        const lat: number = ipData.latitude;
-        const lon: number = ipData.longitude;
-
-        // 2) Buscar previsão do tempo no OpenWeather
-        const apiKey = "651ff3713029bcd4e3e2f54c0ed77b3e"; // coloque sua chave
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${apiKey}`;
-
-        const weatherRes = await fetch(url);
-        const weatherData = await weatherRes.json();
-
-        const max = Math.round(weatherData.main.temp_max);
-        const min = Math.round(weatherData.main.temp_min);
-        const icon = weatherData.weather[0].icon;
-
-        setData({ city, max, min, icon });
+        if (data.success) {
+          setLocation({
+            city: data.city,
+            latitude: data.latitude,
+            longitude: data.longitude,
+          });
+        }
       } catch (err) {
-        console.error("Erro ao carregar clima:", err);
+        console.error("Erro ao localizar usuário:", err);
       }
-    }
+    };
 
-    load();
+    fetchLocation();
   }, []);
 
-  if (!data) return null;
+  // 2. Buscar clima com Open-Meteo
+  useEffect(() => {
+    if (!location) return;
+
+    const fetchWeather = async () => {
+      try {
+        const { latitude, longitude } = location;
+
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        setWeather({
+          temperature: data.current_weather.temperature,
+          windspeed: data.current_weather.windspeed,
+          weathercode: data.current_weather.weathercode,
+        });
+      } catch (err) {
+        console.error("Erro ao buscar clima:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, [location]);
+
+  if (loading) {
+    return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
+  }
+
+  if (!location || !weather) {
+    return (
+      <div className="text-sm text-red-500">
+        Não foi possível carregar o clima.
+      </div>
+    );
+  }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-      <img
-        src={`https://openweathermap.org/img/wn/${data.icon}.png`}
-        width={32}
-        alt="Ícone do clima"
-      />
-      <div>
-        <strong>{data.city}</strong>
-        <br />
-        <span style={{ color: "red" }}>{data.max}°C</span>
-        <span style={{ color: "blue", marginLeft: "10px" }}>{data.min}°C</span>
+    <div className="flex items-center gap-2 text-sm">
+      <span className="text-lg">{getWeatherIcon(weather.weathercode)}</span>
+
+      <div className="flex flex-col leading-none">
+        <span className="font-semibold">{location.city}</span>
+        <span className="text-muted-foreground">
+          {weather.temperature}°C — {weather.windspeed} km/h
+        </span>
       </div>
     </div>
   );
-}
+};
+
+export default WeatherWidget;
