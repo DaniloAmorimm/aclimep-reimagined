@@ -24,7 +24,7 @@ export default function WeatherWidget() {
         const lon: number = ipData.longitude;
 
         // 2) Buscar previsão do tempo no OpenWeather
-        const apiKey = "SUA_API_KEY_AQUI"; // coloque sua chave
+        const apiKey = "651ff3713029bcd4e3e2f54c0ed77b3e"; // coloque sua chave
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${apiKey}`;
 
         const weatherRes = await fetch(url);
