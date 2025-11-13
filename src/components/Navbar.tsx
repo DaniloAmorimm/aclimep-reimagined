@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import WeatherWidget from "./WeatherWidget";
+
 
 const navLinks = [
   { to: "/", label: "Início" },
@@ -32,7 +34,10 @@ export const Navbar = () => {
           <Link to="/" className="font-bold text-xl text-primary">
             ACLIMEPA
           </Link>
-
+          {/* Widget do Clima - Desktop apenas */}
+          <div className="hidden md:flex items-center mr-6">
+            <WeatherWidget />
+          </div>          
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
