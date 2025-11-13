@@ -53,7 +53,7 @@ const isNight = () => {
         const res = await fetch("https://ipapi.co/json/");
         const data = await res.json();
 
-        if (data.success) {
+        if (data.city) {
           setLocation({
             city: data.city,
             latitude: data.latitude,
