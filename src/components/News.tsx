@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
 import {
@@ -9,6 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import anacImage from "@/assets/news-anac-guidelines.jpg";
+import mentalHealthImage from "@/assets/news-mental-health.jpg";
+import cardiologyImage from "@/assets/news-cardiology-workshop.jpg";
+import telemedicineImage from "@/assets/news-telemedicine.jpg";
+import fatigueImage from "@/assets/news-fatigue.jpg";
+import dronesImage from "@/assets/news-drones.jpg";
 
 const newsItems = [
   {
@@ -16,6 +21,7 @@ const newsItems = [
     category: "Regulamentação",
     date: "15 de Janeiro, 2024",
     readTime: "5 min",
+    image: anacImage,
     excerpt: "A ANAC publicou atualizações importantes nos requisitos para certificação médica aeronáutica. Conheça as principais mudanças e como elas afetam os procedimentos de perícia.",
     content: `A Agência Nacional de Aviação Civil (ANAC) publicou uma série de atualizações cruciais nos requisitos para certificação médica aeronáutica que entrarão em vigor em 2024. Estas mudanças representam um marco importante na modernização dos procedimentos de perícia médica no Brasil.
 
@@ -36,6 +42,7 @@ Estes procedimentos visam alinhar o Brasil aos mais altos padrões internacionai
     category: "Artigo Técnico",
     date: "08 de Janeiro, 2024",
     readTime: "8 min",
+    image: mentalHealthImage,
     excerpt: "Exploramos a crescente importância da avaliação psicológica na medicina aeronáutica e como isso contribui para a segurança de voo.",
     content: `A saúde mental dos profissionais da aviação tem ganhado crescente atenção nos últimos anos, especialmente após incidentes que destacaram a necessidade de uma avaliação mais abrangente e contínua.
 
@@ -60,6 +67,7 @@ A medicina aeronáutica moderna reconhece que a aptidão para o voo vai além da
     category: "Eventos",
     date: "02 de Janeiro, 2024",
     readTime: "3 min",
+    image: cardiologyImage,
     excerpt: "Participe do nosso próximo workshop sobre os mais recentes avanços em avaliação cardiológica para aviadores. Inscrições abertas.",
     content: `Estamos organizando um workshop exclusivo sobre Cardiologia Aeronáutica, reunindo os principais especialistas da área para discutir os avanços mais recentes em diagnóstico e avaliação cardiovascular de profissionais da aviação.
 
@@ -89,6 +97,7 @@ Para mais informações e inscrições, entre em contato através dos nossos can
     category: "Tecnologia",
     date: "20 de Dezembro, 2023",
     readTime: "6 min",
+    image: telemedicineImage,
     excerpt: "Como a tecnologia está transformando o acompanhamento médico de profissionais da aviação, mantendo os altos padrões de segurança.",
     content: `A integração da telemedicina nas práticas de medicina aeronáutica representa uma evolução significativa na forma como acompanhamos e cuidamos da saúde dos profissionais da aviação.
 
@@ -113,6 +122,7 @@ A ACLIMEPA Brasil tem investido em infraestrutura tecnológica para oferecer est
     category: "Segurança",
     date: "15 de Dezembro, 2023",
     readTime: "7 min",
+    image: fatigueImage,
     excerpt: "Estudos recentes sobre gerenciamento de fadiga e sua relação com a aptidão médica para voo. Recomendações práticas para aviadores.",
     content: `A fadiga é um dos fatores mais críticos que afetam o desempenho e a segurança na aviação. Compreender, prevenir e gerenciar a fadiga é essencial para manter a aptidão médica para o voo.
 
@@ -156,6 +166,7 @@ A ACLIMEPA Brasil oferece programas de orientação sobre gerenciamento de fadig
     category: "Novidades",
     date: "10 de Dezembro, 2023",
     readTime: "4 min",
+    image: dronesImage,
     excerpt: "As novas exigências médicas para operadores de aeronaves remotamente pilotadas (drones) e o papel da medicina aeronáutica neste setor.",
     content: `O crescimento exponencial da indústria de drones trouxe novos desafios e oportunidades para a medicina aeronáutica. A ANAC estabeleceu requisitos específicos de certificação médica para operadores de aeronaves remotamente pilotadas (RPA).
 
@@ -192,44 +203,96 @@ O futuro da aviação inclui a integração crescente de operações tripuladas 
 export const News = () => {
   const [selectedNews, setSelectedNews] = useState<typeof newsItems[0] | null>(null);
 
+  const featuredNews = newsItems[0];
+  const otherNews = newsItems.slice(1);
+
   return (
     <>
-      <section id="noticias" className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-foreground">Notícias e Artigos</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+      <section id="noticias" className="py-20 bg-background">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Notícias e Artigos</h1>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Fique por dentro das novidades em medicina aeronáutica e perícias
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {newsItems.map((item, index) => (
-              <Card 
-                key={index} 
-                className="hover:shadow-lg transition-shadow cursor-pointer"
+          {/* Featured Article */}
+          <div 
+            className="mb-12 cursor-pointer group"
+            onClick={() => setSelectedNews(featuredNews)}
+          >
+            <div className="grid md:grid-cols-2 gap-8 items-center bg-card rounded-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="overflow-hidden">
+                <img 
+                  src={featuredNews.image} 
+                  alt={featuredNews.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-8 md:p-12">
+                <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">
+                  {featuredNews.category}
+                </Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
+                  {featuredNews.title}
+                </h2>
+                <p className="text-muted-foreground text-lg mb-6">
+                  {featuredNews.excerpt}
+                </p>
+                <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    <span>{featuredNews.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    <span>{featuredNews.readTime}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Other Articles */}
+          <div className="space-y-8">
+            {otherNews.map((item, index) => (
+              <div 
+                key={index}
+                className="cursor-pointer group"
                 onClick={() => setSelectedNews(item)}
               >
-                <CardHeader>
-                  <Badge className="w-fit mb-2 bg-primary/10 text-primary hover:bg-primary/20">
-                    {item.category}
-                  </Badge>
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{item.excerpt}</p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>{item.date}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{item.readTime}</span>
+                <div className="grid md:grid-cols-[300px_1fr] gap-6 items-start bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow p-6">
+                  <div className="overflow-hidden rounded-lg">
+                    <img 
+                      src={item.image} 
+                      alt={item.title}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <Badge className="w-fit mb-3 bg-primary/10 text-primary hover:bg-primary/20">
+                      {item.category}
+                    </Badge>
+                    <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-4 line-clamp-2">
+                      {item.excerpt}
+                    </p>
+                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>{item.date}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        <span>{item.readTime}</span>
+                      </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
