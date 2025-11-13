@@ -30,23 +30,27 @@ const WeatherWidget = () => {
     ];
     return directions[Math.round(deg / 22.5) % 16];
   };
-
+const isNight = () => {
+  const hour = new Date().getHours();
+  return hour < 6 || hour >= 18; // noite
+   };
   // Converter o código do clima do Open-Meteo para um ícone
   const getWeatherIcon = (code: number) => {
-    if (code === 0) return "☀️";
+    const night = isNight();
+    if (code === 0) return night ?  "🌙" : "☀️";
     if (code <= 3) return "⛅";
     if (code <= 55) return "🌧️";
     if (code <= 65) return "🌧️";
     if (code <= 75) return "❄️";
     if (code <= 95) return "⛈️";
-    return "🌦️";
+    return night ?  "🌙" : "🌦️";
   };
 
   // Buscar localização via IP
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        const res = await fetch("https://ipwho.is/");
+        const res = await fetch("https://ipapi.co/json/");
         const data = await res.json();
 
         if (data.success) {
