@@ -1,135 +1,97 @@
-import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import WeatherWidget from "./WeatherWidget";
 
-interface WeatherData {
-  temp: number;
-  tempMin: number;
-  tempMax: number;
-  windspeed: number;
-  winddirection: number;
-  weathercode: number;
-}
 
-interface LocationData {
-  city: string;
-  latitude: number;
-  longitude: number;
-}
+const navLinks = [
+  { to: "/", label: "Início" },
+  { to: "/galeria", label: "Galeria" },
+  { to: "/noticias", label: "Notícias" },
+  { to: "/faq", label: "FAQ" },
+];
 
-const WeatherWidget = () => {
-  const [location, setLocation] = useState<LocationData | null>(null);
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [loading, setLoading] = useState(true);
+export const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  // Converter direção do vento para cardinal (N, NE, L, etc)
-  const getWindDirection = (deg: number) => {
-    const directions = [
-      "N", "NNE", "NE", "ENE",
-      "L", "ESE", "SE", "SSE",
-      "S", "SSO", "SO", "OSO",
-      "O", "ONO", "NO", "NNO"
-    ];
-    return directions[Math.round(deg / 22.5) % 16];
-  };
-
-  // Converter o código do clima do Open-Meteo para um ícone
-  const getWeatherIcon = (code: number) => {
-    if (code === 0) return "☀️";
-    if (code <= 3) return "⛅";
-    if (code <= 55) return "🌧️";
-    if (code <= 65) return "🌧️";
-    if (code <= 75) return "❄️";
-    if (code <= 95) return "⛈️";
-    return "🌦️";
-  };
-
-  // Buscar localização via IP
-  useEffect(() => {
-const fetchLocation = async () => {
-  try {
-    const res = await fetch("https://ipapi.co/json/");
-    const data = await res.json();
-
-    if (data?.city) {
-      setLocation({
-        city: data.city,
-        latitude: data.latitude,
-        longitude: data.longitude,
-      });
+  const scrollToContact = () => {
+    if (location.pathname === "/") {
+      const element = document.getElementById("contato");
+      element?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "/#contato";
     }
-  } catch (err) {
-    console.error("Erro ao localizar usuário:", err);
-  }
-};
-
-    fetchLocation();
-  }, []);
-
-  // Buscar dados do clima com Open-Meteo
-  useEffect(() => {
-    if (!location) return;
-
-    const fetchWeather = async () => {
-      try {
-        const { latitude, longitude } = location;
-
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
-
-        .replace(/\s+/g, "");
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        setWeather({
-          temp: data.current_weather.temperature,
-          windspeed: data.current_weather.windspeed,
-          winddirection: data.current_weather.winddirection,
-          weathercode: data.current_weather.weathercode,
-          tempMin: data.daily.temperature_2m_min[0],
-          tempMax: data.daily.temperature_2m_max[0],
-        });
-      } catch (err) {
-        console.error("Erro ao buscar clima:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWeather();
-  }, [location]);
-
-  if (loading) {
-    return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
-  }
-
-  if (!location || !weather) {
-    return (
-      <div className="text-sm text-red-500">
-        Não foi possível carregar o clima.
-      </div>
-    );
-  }
+    setIsOpen(false);
+  };
 
   return (
-    <div className="flex items-center gap-3 text-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="font-bold text-xl text-primary">
+            ACLIMEPA
+          </Link>
+          {/* Widget do Clima - Desktop apenas */}
+          <div className="hidden md:flex items-center mr-6">
+            <WeatherWidget />
+          </div>          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-primary",
+                  location.pathname === link.to
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Button onClick={scrollToContact} size="sm">
+              Contato
+            </Button>
+          </div>
 
-      <span className="text-xl">{getWeatherIcon(weather.weathercode)}</span>
-
-      <div className="flex flex-col leading-tight">
-        <span className="font-semibold">{location.city}</span>
-
-        <div className="text-muted-foreground text-xs">
-          <span>Agora: {weather.temp}°C • </span>
-          <span>Máx: <span className="text-red-500">{weather.tempMax}°C</span> • </span>
-          <span>Mín: <span className="text-blue-500">{weather.tempMin}°C</span></span>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 text-foreground"
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
 
-        <div className="text-muted-foreground text-xs">
-          Vento: {weather.windspeed} km/h ({getWindDirection(weather.winddirection)})
-        </div>
+        {/* Mobile Navigation */}
+        {isOpen && (
+          <div className="md:hidden py-4 space-y-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "block py-2 text-sm font-medium transition-colors",
+                  location.pathname === link.to
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Button onClick={scrollToContact} size="sm" className="w-full">
+              Contato
+            </Button>
+          </div>
+        )}
       </div>
-
-    </div>
+    </nav>
   );
 };
-
-export default WeatherWidget;
