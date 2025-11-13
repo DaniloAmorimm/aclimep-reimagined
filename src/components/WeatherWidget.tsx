@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
 interface WeatherData {
-  temperature: number;
+  temp: number;
+  tempMin: number;
+  tempMax: number;
   windspeed: number;
+  winddirection: number;
   weathercode: number;
 }
 
@@ -17,18 +20,29 @@ const WeatherWidget = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Converte código do Open-Meteo para um emoji simples
-  const getWeatherIcon = (code: number) => {
-    if (code === 0) return "☀️"; // limpo
-    if (code <= 3) return "⛅"; // nublado leve
-    if (code <= 55) return "🌧️"; // chuva
-    if (code <= 65) return "🌧️"; // chuva moderada
-    if (code <= 75) return "❄️"; // neve
-    if (code <= 95) return "⛈️"; // tempestade
-    return "🌤️";
+  // Converter direção do vento para cardinal (N, NE, L, etc)
+  const getWindDirection = (deg: number) => {
+    const directions = [
+      "N", "NNE", "NE", "ENE",
+      "L", "ESE", "SE", "SSE",
+      "S", "SSO", "SO", "OSO",
+      "O", "ONO", "NO", "NNO"
+    ];
+    return directions[Math.round(deg / 22.5) % 16];
   };
 
-  // 1. Buscar localização por IP
+  // Converter o código do clima do Open-Meteo para um ícone
+  const getWeatherIcon = (code: number) => {
+    if (code === 0) return "☀️";
+    if (code <= 3) return "⛅";
+    if (code <= 55) return "🌧️";
+    if (code <= 65) return "🌧️";
+    if (code <= 75) return "❄️";
+    if (code <= 95) return "⛈️";
+    return "🌦️";
+  };
+
+  // Buscar localização via IP
   useEffect(() => {
     const fetchLocation = async () => {
       try {
@@ -50,7 +64,7 @@ const WeatherWidget = () => {
     fetchLocation();
   }, []);
 
-  // 2. Buscar clima com Open-Meteo
+  // Buscar dados do clima com Open-Meteo
   useEffect(() => {
     if (!location) return;
 
@@ -58,15 +72,25 @@ const WeatherWidget = () => {
       try {
         const { latitude, longitude } = location;
 
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`;
+        const url = `
+          https://api.open-meteo.com/v1/forecast
+          ?latitude=${latitude}
+          &longitude=${longitude}
+          &current_weather=true
+          &daily=temperature_2m_max,temperature_2m_min
+          &timezone=auto
+        `.replace(/\s+/g, "");
 
         const res = await fetch(url);
         const data = await res.json();
 
         setWeather({
-          temperature: data.current_weather.temperature,
+          temp: data.current_weather.temperature,
           windspeed: data.current_weather.windspeed,
+          winddirection: data.current_weather.winddirection,
           weathercode: data.current_weather.weathercode,
+          tempMin: data.daily.temperature_2m_min[0],
+          tempMax: data.daily.temperature_2m_max[0],
         });
       } catch (err) {
         console.error("Erro ao buscar clima:", err);
@@ -91,15 +115,24 @@ const WeatherWidget = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 text-sm">
-      <span className="text-lg">{getWeatherIcon(weather.weathercode)}</span>
+    <div className="flex items-center gap-3 text-sm">
 
-      <div className="flex flex-col leading-none">
+      <span className="text-xl">{getWeatherIcon(weather.weathercode)}</span>
+
+      <div className="flex flex-col leading-tight">
         <span className="font-semibold">{location.city}</span>
-        <span className="text-muted-foreground">
-          {weather.temperature}°C — {weather.windspeed} km/h
-        </span>
+
+        <div className="text-muted-foreground text-xs">
+          <span>Agora: {weather.temp}°C • </span>
+          <span>Máx: <span className="text-red-500">{weather.tempMax}°C</span> • </span>
+          <span>Mín: <span className="text-blue-500">{weather.tempMin}°C</span></span>
+        </div>
+
+        <div className="text-muted-foreground text-xs">
+          Vento: {weather.windspeed} km/h ({getWindDirection(weather.winddirection)})
+        </div>
       </div>
+
     </div>
   );
 };
