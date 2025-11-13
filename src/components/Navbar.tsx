@@ -44,22 +44,22 @@ const WeatherWidget = () => {
 
   // Buscar localização via IP
   useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const res = await fetch("https://ipwho.is/");
-        const data = await res.json();
+const fetchLocation = async () => {
+  try {
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
 
-        if (data.success) {
-          setLocation({
-            city: data.city,
-            latitude: data.latitude,
-            longitude: data.longitude,
-          });
-        }
-      } catch (err) {
-        console.error("Erro ao localizar usuário:", err);
-      }
-    };
+    if (data?.city) {
+      setLocation({
+        city: data.city,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      });
+    }
+  } catch (err) {
+    console.error("Erro ao localizar usuário:", err);
+  }
+};
 
     fetchLocation();
   }, []);
@@ -72,14 +72,9 @@ const WeatherWidget = () => {
       try {
         const { latitude, longitude } = location;
 
-        const url = `
-          https://api.open-meteo.com/v1/forecast
-          ?latitude=${latitude}
-          &longitude=${longitude}
-          &current_weather=true
-          &daily=temperature_2m_max,temperature_2m_min
-          &timezone=auto
-        `.replace(/\s+/g, "");
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
+
+        .replace(/\s+/g, "");
 
         const res = await fetch(url);
         const data = await res.json();
