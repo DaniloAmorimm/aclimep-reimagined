@@ -38,7 +38,7 @@ const isNight = () => {
   const getWeatherIcon = (code: number) => {
     const night = isNight();
     if (code === 0) return night ?  "🌙" : "☀️";
-    if (code <= 3) return "⛅";
+    if (code <= 3) return night ?  "🌙" :"⛅";
     if (code <= 55) return "🌧️";
     if (code <= 65) return "🌧️";
     if (code <= 75) return "❄️";
