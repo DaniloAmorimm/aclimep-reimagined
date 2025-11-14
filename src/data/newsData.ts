@@ -21,7 +21,7 @@ export const newsItems: NewsItem[] = [
     slug: "novas-diretrizes-anac-2024",
     title: "Novas Diretrizes da ANAC para 2024",
     category: "Regulamentação",
-    date: "15 de Janeiro, 2024",
+    date: "15 de Janeiro, 2024654",
     readTime: "5 min",
     image: anacImage,
     excerpt: "A ANAC publicou atualizações importantes nos requisitos para certificação médica aeronáutica. Conheça as principais mudanças e como elas afetam os procedimentos de perícia.",
