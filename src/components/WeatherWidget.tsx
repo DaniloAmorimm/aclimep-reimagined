@@ -15,6 +15,15 @@ interface LocationData {
   longitude: number;
 }
 
+interface CachedWeather {
+  location: LocationData;
+  weather: WeatherData;
+  timestamp: number;
+}
+
+const CACHE_KEY = "weather_widget_cache";
+const CACHE_TIME = 15 * 60 * 1000; // 15 minutos
+
 const WeatherWidget = () => {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -46,27 +55,48 @@ const isNight = () => {
     return night ?  "🌙" : "🌦️";
   };
 
-  // Buscar localização via IP
+  // ---- 1) Carregar cache do localStorage
   useEffect(() => {
+    const cached = localStorage.getItem(CACHE_KEY);
+
+    if (cached) {
+      const data: CachedWeather = JSON.parse(cached);
+
+      const isValid = Date.now() - data.timestamp < CACHE_TIME;
+
+      if (isValid) {
+        setLocation(data.location);
+        setWeather(data.weather);
+        setLoading(false);
+        return; // evita requisições desnecessárias
+      }
+    }
+  }, []);
+
+  // ---- 2) Buscar localização via IP caso não tenha cache
+  useEffect(() => {
+    if (location) return;
+
     const fetchLocation = async () => {
       try {
         const res = await fetch("https://ipwho.is/");
         const data = await res.json();
 
         if (data.city) {
-          setLocation({
+          const loc: LocationData = {
             city: data.city,
             latitude: data.latitude,
             longitude: data.longitude,
-          });
+          };
         }
       } catch (err) {
         console.error("Erro ao localizar usuário:", err);
+        setLoading(false);
       }
     };
 
     fetchLocation();
-  }, []);
+  }, [location]);
 
   // Buscar dados do clima com Open-Meteo
   useEffect(() => {
@@ -88,14 +118,25 @@ const isNight = () => {
         const res = await fetch(url);
         const data = await res.json();
 
-        setWeather({
+        const newWeather: WeatherData = {
           temp: data.current_weather.temperature,
           windspeed: data.current_weather.windspeed,
           winddirection: data.current_weather.winddirection,
           weathercode: data.current_weather.weathercode,
           tempMin: data.daily.temperature_2m_min[0],
           tempMax: data.daily.temperature_2m_max[0],
-        });
+        };
+
+        setWeather(newWeather);
+
+        // ---- salvar cache
+        const cached: CachedWeather = {
+          location,
+          weather: newWeather,
+          timestamp: Date.now(),
+        };
+
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cached));
       } catch (err) {
         console.error("Erro ao buscar clima:", err);
       } finally {
@@ -106,6 +147,7 @@ const isNight = () => {
     fetchWeather();
   }, [location]);
 
+  // ---- 4) Renderização
   if (loading) {
     return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
   }
