@@ -28,6 +28,7 @@ const WeatherWidget = () => {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   // Converter direção do vento para cardinal (N, NE, L, etc)
   const getWindDirection = (deg: number) => {
@@ -35,7 +36,7 @@ const WeatherWidget = () => {
       "N", "NNE", "NE", "ENE",
       "L", "ESE", "SE", "SSE",
       "S", "SSO", "SO", "OSO",
-      "O", "ONO", "NO", "NNO"
+      "O", "ONO", "NO", "NNO",
     ];
     return directions[Math.round(deg / 22.5) % 16];
   };
@@ -68,7 +69,7 @@ const isNight = () => {
         setLocation(data.location);
         setWeather(data.weather);
         setLoading(false);
-        return; // evita requisições desnecessárias
+        //return; // evita requisições desnecessárias
       }
     }
   }, []);
@@ -77,25 +78,43 @@ const isNight = () => {
   useEffect(() => {
     if (location) return;
 
-    const fetchLocation = async () => {
+    const getLocation = async () => {
       try {
         const res = await fetch("https://ipwho.is/");
         const data = await res.json();
 
-        if (data.city) {
-          const loc: LocationData = {
+        if (data.success !== false && data.city) {
+          setLocation({
             city: data.city,
             latitude: data.latitude,
             longitude: data.longitude,
-          };
+          });
+          return;
         }
+
+        // fallback: geolocalização do navegador
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            setLocation({
+              city: "Sua região",
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            });
+          },
+          () => {
+            setError(true);
+            setLoading(false);
+          }
+        );
+
       } catch (err) {
-        console.error("Erro ao localizar usuário:", err);
+        console.error("Erro ao localizar:", err);
+        setError(true);
         setLoading(false);
       }
     };
 
-    fetchLocation();
+    getLocation();
   }, [location]);
 
   // Buscar dados do clima com Open-Meteo
@@ -108,8 +127,8 @@ const isNight = () => {
 
         const url = `
           https://api.open-meteo.com/v1/forecast
-          ?latitude=${latitude}
-          &longitude=${longitude}
+          ?latitude=${location.latitude}
+          &longitude=${location.longitude}
           &current_weather=true
           &daily=temperature_2m_max,temperature_2m_min
           &timezone=auto
@@ -117,6 +136,12 @@ const isNight = () => {
 
         const res = await fetch(url);
         const data = await res.json();
+
+        if (!data.current_weather) {
+          setError(true);
+          setLoading(false);
+          return;
+        }
 
         const newWeather: WeatherData = {
           temp: data.current_weather.temperature,
@@ -130,15 +155,18 @@ const isNight = () => {
         setWeather(newWeather);
 
         // ---- salvar cache
-        const cached: CachedWeather = {
-          location,
-          weather: newWeather,
-          timestamp: Date.now(),
-        };
 
-        localStorage.setItem(CACHE_KEY, JSON.stringify(cached));
-      } catch (err) {
-        console.error("Erro ao buscar clima:", err);
+        localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({
+            location,
+            weather: newWeather,
+            timestamp: Date.now(),
+          })
+        );
+      } catch (e) {
+        console.error("Erro ao buscar clima:", e);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -152,13 +180,7 @@ const isNight = () => {
     return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
   }
 
-  if (!location || !weather) {
-    return (
-      <div className="text-sm text-red-500">
-        Não foi possível carregar o clima.
-      </div>
-    );
-  }
+    return <div className="text-sm text-red-500">Não foi possível carregar o clima.</div>;
 
   return (
     <div className="flex items-center gap-3 text-sm">
@@ -169,9 +191,9 @@ const isNight = () => {
         <span className="font-semibold">{location.city}</span>
 
         <div className="text-muted-foreground text-xs">
-          <span>Agora: {weather.temp}°C • </span>
-          <span>Máx: <span className="text-red-500">{weather.tempMax}°C</span> • </span>
-          <span>Mín: <span className="text-blue-500">{weather.tempMin}°C</span></span>
+          Agora: {weather.temp}°C •{" "}
+          Máx: <span className="text-red-500">{weather.tempMax}°C</span> •{" "}
+          Mín: <span className="text-blue-500">{weather.tempMin}°C</span>
         </div>
 
         <div className="text-muted-foreground text-xs">
