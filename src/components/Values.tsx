@@ -38,7 +38,7 @@ export const Values = () => {
             Nossos Valores
           </h2>
           <p className="text-lg text-muted-foreground">
-            Princípios fundamentais que norteiam nossa atuação na medicina aeronáutica
+            Princípios fundamentais que norteiam nossa atuação na medicina de aviação
           </p>
         </div>
 
