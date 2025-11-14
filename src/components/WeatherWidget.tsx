@@ -66,7 +66,6 @@ const WeatherWidget = () => {
     const valid = Date.now() - cache.timestamp < CACHE_TIME;
 
     if (valid) {
-      console.log("CACHE RESTAURADO →", cache);
       setLocation(cache.location);
       setWeather(cache.weather);
       setLoading(false);
@@ -81,7 +80,6 @@ const WeatherWidget = () => {
       try {
         const res = await fetch("https://ipwho.is/");
         const data = await res.json();
-        console.log("IPWHO DATA →", data);
 
         if (data.success !== false && data.city) {
           setLocation({
@@ -99,7 +97,6 @@ const WeatherWidget = () => {
               latitude: pos.coords.latitude,
               longitude: pos.coords.longitude
             });
-            console.log("GEOLOCATION →", pos.coords);
           },
           () => {
             setError(true);
@@ -131,11 +128,9 @@ const WeatherWidget = () => {
           &timezone=auto
         `.replace(/\s+/g, "");
 
-        console.log("OPEN-METEO URL →", url);
 
         const res = await fetch(url);
         const data = await res.json();
-        console.log("WEATHER API RESULT →", data);
 
         if (!data.current_weather) {
           setError(true);
