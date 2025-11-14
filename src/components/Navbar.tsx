@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -16,13 +16,18 @@ const navLinks = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const scrollToContact = () => {
     if (location.pathname === "/") {
       const element = document.getElementById("contato");
       element?.scrollIntoView({ behavior: "smooth" });
     } else {
-      window.location.href = "/#contato";
+      navigate("/"); // navega para a home sem reload
+      setTimeout(() => {
+        const element = document.getElementById("contato");
+        element?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
     }
     setIsOpen(false);
   };
