@@ -50,7 +50,7 @@ const isNight = () => {
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        const res = await fetch("https://ipapi.co/json/");
+        const res = await fetch("https://ipwho.is/");
         const data = await res.json();
 
         if (data.city) {
