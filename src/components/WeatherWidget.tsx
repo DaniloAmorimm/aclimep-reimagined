@@ -30,55 +30,54 @@ const WeatherWidget = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Converter direção do vento para cardinal (N, NE, L, etc)
+  // Direção do vento em PT-BR
   const getWindDirection = (deg: number) => {
     const directions = [
       "N", "NNE", "NE", "ENE",
       "L", "ESE", "SE", "SSE",
       "S", "SSO", "SO", "OSO",
-      "O", "ONO", "NO", "NNO",
+      "O", "ONO", "NO", "NNO"
     ];
     return directions[Math.round(deg / 22.5) % 16];
   };
-const isNight = () => {
-  const hour = new Date().getHours();
-  return hour < 6 || hour >= 18; // noite
-   };
-  // Converter o código do clima do Open-Meteo para um ícone
+
+  const isNight = () => {
+    const h = new Date().getHours();
+    return h < 6 || h >= 18;
+  };
+
   const getWeatherIcon = (code: number) => {
     const night = isNight();
-    if (code === 0) return night ?  "🌙" : "☀️";
-    if (code <= 3) return night ?  "🌙" :"⛅";
+    if (code === 0) return night ? "🌙" : "☀️";
+    if (code <= 3) return night ? "🌙" : "⛅";
     if (code <= 55) return "🌧️";
     if (code <= 65) return "🌧️";
     if (code <= 75) return "❄️";
     if (code <= 95) return "⛈️";
-    return night ?  "🌙" : "🌦️";
+    return night ? "🌙" : "🌦️";
   };
 
-  // ---- 1) Carregar cache do localStorage
+  // 1 — Carregar CACHE
   useEffect(() => {
-    const cached = localStorage.getItem(CACHE_KEY);
+    const saved = localStorage.getItem(CACHE_KEY);
+    if (!saved) return;
 
-    if (cached) {
-      const data: CachedWeather = JSON.parse(cached);
+    const cache: CachedWeather = JSON.parse(saved);
+    const valid = Date.now() - cache.timestamp < CACHE_TIME;
 
-      const isValid = Date.now() - data.timestamp < CACHE_TIME;
-
-      if (isValid) {
-        setLocation(data.location);
-        setWeather(data.weather);
-        setLoading(false);
-        //return; // evita requisições desnecessárias
-      }
+    if (valid) {
+      console.log("CACHE RESTAURADO →", cache);
+      setLocation(cache.location);
+      setWeather(cache.weather);
+      setLoading(false);
     }
   }, []);
 
-  // ---- 2) Buscar localização via IP caso não tenha cache
+  // 2 — Buscar localização (caso não tenha cache)
   useEffect(() => {
     if (location) return;
 
-    const getLocation = async () => {
+    const fetchLocation = async () => {
       try {
         const res = await fetch("https://ipwho.is/");
         const data = await res.json();
@@ -88,18 +87,17 @@ const isNight = () => {
           setLocation({
             city: data.city,
             latitude: data.latitude,
-            longitude: data.longitude,
+            longitude: data.longitude
           });
           return;
         }
 
-        // fallback: geolocalização do navegador
         navigator.geolocation.getCurrentPosition(
           (pos) => {
             setLocation({
               city: "Sua região",
               latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
+              longitude: pos.coords.longitude
             });
             console.log("GEOLOCATION →", pos.coords);
           },
@@ -108,25 +106,22 @@ const isNight = () => {
             setLoading(false);
           }
         );
-
-      } catch (err) {
-        console.error("Erro ao localizar:", err);
+      } catch (e) {
+        console.error("Erro ao localizar:", e);
         setError(true);
         setLoading(false);
       }
     };
 
-    getLocation();
+    fetchLocation();
   }, [location]);
 
-  // Buscar dados do clima com Open-Meteo
+  // 3 — Buscar clima
   useEffect(() => {
     if (!location) return;
 
     const fetchWeather = async () => {
       try {
-        const { latitude, longitude } = location;
-
         const url = `
           https://api.open-meteo.com/v1/forecast
           ?latitude=${location.latitude}
@@ -135,12 +130,12 @@ const isNight = () => {
           &daily=temperature_2m_max,temperature_2m_min
           &timezone=auto
         `.replace(/\s+/g, "");
-         console.log("OPEN-METEO URL →", url);
+
+        console.log("OPEN-METEO URL →", url);
 
         const res = await fetch(url);
         const data = await res.json();
         console.log("WEATHER API RESULT →", data);
-
 
         if (!data.current_weather) {
           setError(true);
@@ -154,19 +149,17 @@ const isNight = () => {
           winddirection: data.current_weather.winddirection,
           weathercode: data.current_weather.weathercode,
           tempMin: data.daily.temperature_2m_min[0],
-          tempMax: data.daily.temperature_2m_max[0],
+          tempMax: data.daily.temperature_2m_max[0]
         };
 
         setWeather(newWeather);
-
-        // ---- salvar cache
 
         localStorage.setItem(
           CACHE_KEY,
           JSON.stringify({
             location,
             weather: newWeather,
-            timestamp: Date.now(),
+            timestamp: Date.now()
           })
         );
       } catch (e) {
@@ -180,16 +173,17 @@ const isNight = () => {
     fetchWeather();
   }, [location]);
 
-  // ---- 4) Renderização
+  // Renderização
   if (loading) {
     return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
   }
 
+  if (error || !location || !weather) {
     return <div className="text-sm text-red-500">Não foi possível carregar o clima.</div>;
+  }
 
   return (
     <div className="flex items-center gap-3 text-sm">
-
       <span className="text-xl">{getWeatherIcon(weather.weathercode)}</span>
 
       <div className="flex flex-col leading-tight">
@@ -205,7 +199,6 @@ const isNight = () => {
           Vento: {weather.windspeed} km/h ({getWindDirection(weather.winddirection)})
         </div>
       </div>
-
     </div>
   );
 };
