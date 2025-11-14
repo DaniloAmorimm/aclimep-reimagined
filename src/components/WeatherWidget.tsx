@@ -82,6 +82,7 @@ const isNight = () => {
       try {
         const res = await fetch("https://ipwho.is/");
         const data = await res.json();
+        console.log("IPWHO DATA →", data);
 
         if (data.success !== false && data.city) {
           setLocation({
@@ -100,6 +101,7 @@ const isNight = () => {
               latitude: pos.coords.latitude,
               longitude: pos.coords.longitude,
             });
+            console.log("GEOLOCATION →", pos.coords);
           },
           () => {
             setError(true);
@@ -133,9 +135,12 @@ const isNight = () => {
           &daily=temperature_2m_max,temperature_2m_min
           &timezone=auto
         `.replace(/\s+/g, "");
+         console.log("OPEN-METEO URL →", url);
 
         const res = await fetch(url);
         const data = await res.json();
+        console.log("WEATHER API RESULT →", data);
+
 
         if (!data.current_weather) {
           setError(true);
