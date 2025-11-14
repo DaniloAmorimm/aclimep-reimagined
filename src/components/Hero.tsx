@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-aviation.jpg";
+import logo from "@/assets/logo_branco.png"; // <= AQUI: sua imagem do logo	
 
 export const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -23,16 +24,19 @@ export const Hero = () => {
       
       <div className="container relative z-10 px-4 py-20 text-center">
         <div className="mx-auto max-w-4xl space-y-8 animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground leading-tight">
-            ACLIMEPA Brasil
-          </h1>
+        {/* LOGO CENTRAL */}
+          <img
+            src={logo}
+            alt="ACLIMEPA Brasil"
+            className="mx-auto w-[320px] md:w-[520px] lg:w-[620px] drop-shadow-2xl"
+          />
           <p className="text-xl md:text-2xl text-primary-foreground/90 font-light italic">
             Associação de Clínicas e Médicos Peritos em Aviação
           </p>
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-3xl mx-auto leading-relaxed">
             Entidade associativa destinada a congregar clínicas médicas e médicos credenciados 
-            que realizam perícias de saúde em aeronautas junto à Agência Reguladora de Aviação 
-            Brasileira e Estrangeira
+            que realizam perícias de saúde em aeronavegantes junto à Agência Reguladora de Aviação 
+            Brasileira e Estrangeiras
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
             <Button 
