@@ -17,7 +17,9 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+      - name: Dar permissão ao Vite
+        run: chmod +x node_modules/.bin/vite
 
       - name: Build
         run: npm run build
