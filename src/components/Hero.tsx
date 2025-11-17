@@ -19,7 +19,7 @@ export const Hero = () => {
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-background/95" />
       </div>
       
       <div className="container relative z-10 px-4 py-20 text-center">
