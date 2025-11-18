@@ -2,24 +2,24 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Building2, Users, Plane } from "lucide-react";
 
 const galleryImages = [
-  {
-    category: "Equipe",
-    icon: Users,
-    images: [
-      { title: "Equipe Médica", description: "Profissionais especializados" },
-      { title: "Peritos Aeronáuticos", description: "Experiência e dedicação" },
-      { title: "Atendimento", description: "Excelência no cuidado" },
-    ]
-  },
-  {
-    category: "Instalações",
-    icon: Building2,
-    images: [
-      { title: "Consultórios", description: "Infraestrutura moderna" },
-      { title: "Sala de Exames", description: "Equipamentos de ponta" },
-      { title: "Recepção", description: "Ambiente acolhedor" },
-    ]
-  },
+  // {
+  //   category: "Equipe",
+  //   icon: Users,
+  //   images: [
+  //     { title: "Equipe Médica", description: "Profissionais especializados" },
+  //     { title: "Peritos Aeronáuticos", description: "Experiência e dedicação" },
+  //     { title: "Atendimento", description: "Excelência no cuidado" },
+  //   ]
+  // },
+  // {
+  //   category: "Instalações",
+  //   icon: Building2,
+  //   images: [
+  //     { title: "Consultórios", description: "Infraestrutura moderna" },
+  //     { title: "Sala de Exames", description: "Equipamentos de ponta" },
+  //     { title: "Recepção", description: "Ambiente acolhedor" },
+  //   ]
+  // },
   {
     category: "Eventos",
     icon: Plane,
@@ -38,7 +38,7 @@ export const Gallery = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-foreground">Galeria</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Conheça nossa equipe, instalações e momentos importantes da ACLIMEPA
+            Conheça nossos momentos importantes da ACLIMEPA
           </p>
         </div>
 

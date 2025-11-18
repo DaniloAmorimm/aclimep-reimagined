@@ -16,7 +16,7 @@ const faqItems = [
   },
   {
     question: "Quais exames são necessários para a perícia?",
-    answer: "Os exames incluem avaliação clínica geral, oftalmológica, otorrinolaringológica, cardiológica, neurológica e psicológica. Exames complementares como eletrocardiograma, audiometria, e exames laboratoriais também são realizados conforme a classe do certificado."
+    answer: "Pré determinados por categoria e determinados pelo Regulamento Brasileiro da Aviação Civil (RBAC) nº 67"
   },
   {
     question: "Preciso agendar com antecedência?",
@@ -28,11 +28,11 @@ const faqItems = [
   },
   {
     question: "O que acontece se eu for reprovado na perícia?",
-    answer: "Em caso de reprovação, você receberá orientações sobre os motivos e, quando possível, sobre tratamentos ou procedimentos necessários para uma nova avaliação. Dependendo do caso, você pode solicitar junta médica para recurso."
+    answer: "Em caso de Não apto, você receberá orientações sobre os motivos e, quando possível, sobre tratamentos ou procedimentos necessários para uma nova avaliação. Dependendo do caso, você pode solicitar junta médica para recurso."
   },
   {
     question: "ACLIMEPA realiza perícias para todas as classes?",
-    answer: "Sim, a ACLIMEPA está credenciada para realizar perícias de todas as classes de Certificado Médico Aeronáutico (CMA), incluindo CCF (comissários), PC (pilotos comerciais) e PP (pilotos privados)."
+    answer: "Não, Somente os Associados a Aclimepa que realizam"
   },
   {
     question: "Quanto tempo demora o resultado?",
