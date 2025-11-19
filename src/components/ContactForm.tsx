@@ -50,7 +50,7 @@ export const ContactForm = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-foreground">Fale Conosco</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Entre em contato para agendar sua perícia ou esclarecer dúvidas
+            Entre em contato para esclarecer dúvidas
           </p>
         </div>
 
@@ -124,7 +124,7 @@ export const ContactForm = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            {/* <Card>
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <Phone className="w-6 h-6 text-primary mt-1" />
@@ -134,9 +134,9 @@ export const ContactForm = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
-            <Card>
+            {/* <Card>
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <MapPin className="w-6 h-6 text-primary mt-1" />
@@ -150,7 +150,7 @@ export const ContactForm = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             <Card>
               <CardContent className="p-6">
@@ -173,8 +173,7 @@ export const ContactForm = () => {
         </div>
 
         <p className="text-center text-muted-foreground mt-12 max-w-2xl mx-auto">
-          Nossa equipe está à disposição para atendê-lo. Entre em contato para agendar sua perícia 
-          ou esclarecer qualquer dúvida sobre medicina aeronáutica.
+          Nossa equipe está à disposição para atendê-lo. Entre em contato esclarecer qualquer dúvida sobre medicina aeronáutica.
         </p>
       </div>
     </section>
