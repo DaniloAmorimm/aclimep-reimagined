@@ -16,7 +16,7 @@ const faqItems = [
   },
   {
     question: "Quais exames são necessários para a perícia?",
-    answer: "Pré determinados por categoria e determinados pelo Regulamento Brasileiro da Aviação Civil (RBAC) nº 67."
+    answer: "Pré determinados por categoria e determinados pelo Regulamento Brasileiro da Aviação Civil (RBAC) nº 67"
   },
   {
     question: "Preciso agendar com antecedência?",
@@ -32,7 +32,7 @@ const faqItems = [
   },
   {
     question: "ACLIMEPA realiza perícias para todas as classes?",
-    answer: "Não, Somente os Associados a Aclimepa que realizam."
+    answer: "Não, Somente os Associados a Aclimepa que realizam"
   },
   {
     question: "Quanto tempo demora o resultado?",

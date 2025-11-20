@@ -50,7 +50,7 @@ export const ContactForm = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-foreground">Fale Conosco</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Entre em contato conosco para esclarecer dúvidas.
+            Entre em contato para esclarecer dúvidas
           </p>
         </div>
 
@@ -173,7 +173,7 @@ export const ContactForm = () => {
         </div>
 
         <p className="text-center text-muted-foreground mt-12 max-w-2xl mx-auto">
-          Nossa equipe está à disposição para atendê-lo. Entre em contato conosco para esclarecer qualquer dúvida sobre medicina aeronáutica.
+          Nossa equipe está à disposição para atendê-lo. Entre em contato esclarecer qualquer dúvida sobre medicina aeronáutica.
         </p>
       </div>
     </section>
