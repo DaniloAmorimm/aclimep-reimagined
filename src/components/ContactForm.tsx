@@ -162,7 +162,7 @@ export const ContactForm = () => {
                     </a>
                   </Button>
                   <Button variant="outline" size="icon" asChild>
-                    <a href="https://www.instagram.com/aclimepabrasil/" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.instagram.com/aclimepabrasiloficial/" target="_blank" rel="noopener noreferrer">
                       <Instagram className="w-5 h-5" />
                     </a>
                   </Button>

@@ -1,3 +1,5 @@
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Building2, Users, Plane } from "lucide-react";
 
@@ -31,8 +33,12 @@ const galleryImages = [
   }
 ];
 
-export const Gallery = () => {
+const Gallery = () => {
   return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      <div className="pt-16 flex-grow">
     <section id="galeria" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
@@ -67,5 +73,11 @@ export const Gallery = () => {
         </div>
       </div>
     </section>
+      </div>
+
+      <Footer />
+    </div>
   );
 };
+
+export default Gallery;
