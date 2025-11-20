@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import GalleryComponent from "@/components/Gallery";
 import { Card, CardContent } from "@/components/ui/card";
 import { Building2, Users, Plane } from "lucide-react";
 
