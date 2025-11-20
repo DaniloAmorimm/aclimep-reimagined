@@ -9,6 +9,9 @@ import News from "./pages/News";
 import NewsArticle from "./pages/NewsArticle";
 import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
+import Error403 from "./pages/Error403";
+import Error500 from "./pages/Error500";
+import Error503 from "./pages/Error503";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +27,9 @@ const App = () => (
           <Route path="/noticias" element={<News />} />
           <Route path="/noticias/:slug" element={<NewsArticle />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/erro-403" element={<Error403 />} />
+          <Route path="/erro-500" element={<Error500 />} />
+          <Route path="/erro-503" element={<Error503 />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
