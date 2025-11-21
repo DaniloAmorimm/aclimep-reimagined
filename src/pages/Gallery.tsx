@@ -6,7 +6,7 @@ const Gallery = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="pt-16 flex-grow">
+      <div className="pt-16 flex-grow bg-muted/30">
         <GalleryComponent />
       </div>
       <Footer />
