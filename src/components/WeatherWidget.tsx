@@ -78,7 +78,7 @@ const WeatherWidget = () => {
 
     const fetchLocation = async () => {
       try {
-        const res = await fetch("https://ipwho.is/");
+        const res = await fetch("https://ipwho.is/?ip=");
         const data = await res.json();
 
         if (data.success !== false && data.city) {
