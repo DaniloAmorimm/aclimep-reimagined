@@ -30,7 +30,7 @@ const WeatherWidget = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Direção do vento em português BR
+  // Direção do vento PT-BR
   const getWindDirection = (deg: number) => {
     const dirs = [
       "N", "NNE", "NE", "ENE",
@@ -57,9 +57,7 @@ const WeatherWidget = () => {
     return night ? "🌙" : "🌦️";
   };
 
-  // ------------------------------------------------------------
-  // ✅ REVERSE GEOCODE — CONVERTER COORDENADAS EM NOME DA CIDADE
-  // ------------------------------------------------------------
+  // Reverse geocode → converter coordenadas em cidade
   const getCityName = async (lat: number, lon: number) => {
     try {
       const res = await fetch(
@@ -95,63 +93,59 @@ const WeatherWidget = () => {
     }
   }, []);
 
-// 2 — Buscar localização via IPAPI + reverse geocode
-useEffect(() => {
-  if (location) return;
+  // 2 — Buscar localização via IPAPI + reverse geocode
+  useEffect(() => {
+    if (location) return;
 
-  const fetchLocation = async () => {
-    try {
-      let latitude: number | null = null;
-      let longitude: number | null = null;
-
-      // 1 — TENTAR GEOIP (ipapi.co)
+    const fetchLocation = async () => {
       try {
-        const res = await fetch("https://ipapi.co/json/");
-        const data = await res.json();
+        let latitude: number | null = null;
+        let longitude: number | null = null;
 
-        if (data && data.latitude && data.longitude) {
-          latitude = data.latitude;
-          longitude = data.longitude;
-          console.log("🌎 GeoIP detectado:", latitude, longitude);
+        // 1 — GeoIP (igual UOL)
+        try {
+          const res = await fetch("https://ipapi.co/json/");
+          const data = await res.json();
+
+          if (data && data.latitude && data.longitude) {
+            latitude = data.latitude;
+            longitude = data.longitude;
+            console.log("🌎 GeoIP detectado:", latitude, longitude);
+          }
+        } catch (_) {}
+
+        // 2 — Fallback: GPS do navegador
+        if (!latitude || !longitude) {
+          console.log("📍 Usando GPS do navegador");
+
+          await new Promise<void>((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                latitude = pos.coords.latitude;
+                longitude = pos.coords.longitude;
+                resolve();
+              },
+              () => reject()
+            );
+          });
         }
-      } catch (_) {}
 
-      // 2 — FALLBACK: navegador (GPS)
-      if (!latitude || !longitude) {
-        console.log("📍 Usando GPS do navegador");
+        if (!latitude || !longitude) throw new Error("Sem localização");
 
-        await new Promise<void>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(
-            (pos) => {
-              latitude = pos.coords.latitude;
-              longitude = pos.coords.longitude;
-              resolve();
-            },
-            () => reject()
-          );
+        // 3 — Reverse geocode (pegar nome da cidade)
+        const city = await getCityName(latitude, longitude);
+
+        setLocation({
+          city,
+          latitude,
+          longitude
         });
+      } catch (e) {
+        console.error("Erro ao localizar:", e);
+        setError(true);
+        setLoading(false);
       }
-
-      if (!latitude || !longitude) throw new Error("Sem localização");
-
-      // 3 — Reverse geocode para pegar nome da cidade
-      const city = await getCityName(latitude, longitude);
-
-      setLocation({
-        city,
-        latitude,
-        longitude
-      });
-    } catch (e) {
-      console.error("Erro ao localizar:", e);
-      setError(true);
-      setLoading(false);
-    }
-  };
-
-  fetchLocation();
-}, [location]);
-
+    };
 
     fetchLocation();
   }, [location]);
@@ -230,15 +224,4 @@ useEffect(() => {
         <div className="text-muted-foreground text-xs">
           Agora: {weather.temp}°C •{" "}
           Máx: <span className="text-red-500">{weather.tempMax}°C</span> •{" "}
-          Mín: <span className="text-blue-500">{weather.tempMin}°C</span>
-        </div>
-
-        <div className="text-muted-foreground text-xs">
-          Vento: {weather.windspeed} km/h ({getWindDirection(weather.winddirection)})
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default WeatherWidget;
+          Mín: <span className="text-blue
