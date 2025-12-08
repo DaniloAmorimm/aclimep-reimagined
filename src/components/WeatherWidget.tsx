@@ -22,7 +22,7 @@ interface CachedWeather {
 }
 
 const CACHE_KEY = "weather_widget_cache";
-const CACHE_TIME = 15 * 60 * 1000; // 15 minutos
+const CACHE_TIME = 15 * 60 * 1000; // 15 min
 
 const WeatherWidget = () => {
   const [location, setLocation] = useState<LocationData | null>(null);
@@ -30,15 +30,15 @@ const WeatherWidget = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Direção do vento em PT-BR
+  // Direção do vento em português BR
   const getWindDirection = (deg: number) => {
-    const directions = [
+    const dirs = [
       "N", "NNE", "NE", "ENE",
       "L", "ESE", "SE", "SSE",
       "S", "SSO", "SO", "OSO",
       "O", "ONO", "NO", "NNO"
     ];
-    return directions[Math.round(deg / 22.5) % 16];
+    return dirs[Math.round(deg / 22.5) % 16];
   };
 
   const isNight = () => {
@@ -57,6 +57,29 @@ const WeatherWidget = () => {
     return night ? "🌙" : "🌦️";
   };
 
+  // ------------------------------------------------------------
+  // ✅ REVERSE GEOCODE — CONVERTER COORDENADAS EM NOME DA CIDADE
+  // ------------------------------------------------------------
+  const getCityName = async (lat: number, lon: number) => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+      );
+
+      const data = await res.json();
+
+      return (
+        data.address.city ||
+        data.address.town ||
+        data.address.village ||
+        data.address.suburb ||
+        "Sua região"
+      );
+    } catch (e) {
+      return "Sua região";
+    }
+  };
+
   // 1 — Carregar CACHE
   useEffect(() => {
     const saved = localStorage.getItem(CACHE_KEY);
@@ -72,37 +95,44 @@ const WeatherWidget = () => {
     }
   }, []);
 
-  // 2 — Buscar localização (caso não tenha cache)
+  // 2 — Buscar localização via IP + reverse geocode
   useEffect(() => {
     if (location) return;
 
     const fetchLocation = async () => {
       try {
+        // FIX: usar ?ip= para evitar erro
         const res = await fetch("https://ipwho.is/?ip=");
-        const data = await res.json();
+        const ipdata = await res.json();
 
-        if (data.success !== false && data.city) {
-          setLocation({
-            city: data.city,
-            latitude: data.latitude,
-            longitude: data.longitude
+        let latitude: number;
+        let longitude: number;
+
+        if (ipdata.success !== false && ipdata.latitude && ipdata.longitude) {
+          latitude = ipdata.latitude;
+          longitude = ipdata.longitude;
+        } else {
+          // fallback navegador
+          await new Promise<void>((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                latitude = pos.coords.latitude;
+                longitude = pos.coords.longitude;
+                resolve();
+              },
+              () => reject()
+            );
           });
-          return;
         }
 
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            setLocation({
-              city: "Sua região",
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude
-            });
-          },
-          () => {
-            setError(true);
-            setLoading(false);
-          }
-        );
+        // 👉 Buscar nome da cidade a partir das coordenadas
+        const city = await getCityName(latitude, longitude);
+
+        setLocation({
+          city,
+          latitude,
+          longitude
+        });
       } catch (e) {
         console.error("Erro ao localizar:", e);
         setError(true);
@@ -128,7 +158,6 @@ const WeatherWidget = () => {
           &timezone=auto
         `.replace(/\s+/g, "");
 
-
         const res = await fetch(url);
         const data = await res.json();
 
@@ -149,6 +178,7 @@ const WeatherWidget = () => {
 
         setWeather(newWeather);
 
+        // Salvar cache
         localStorage.setItem(
           CACHE_KEY,
           JSON.stringify({
@@ -168,7 +198,7 @@ const WeatherWidget = () => {
     fetchWeather();
   }, [location]);
 
-  // Renderização
+  // UI
   if (loading) {
     return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
   }
