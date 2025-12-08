@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import aclimepaVerde from "@/assets/gallery/aclimepa-verde.jpeg";
@@ -9,11 +9,11 @@ import aclimepaAviaoSunset from "@/assets/gallery/aclimepa-aviao-sunset.jpeg";
 import aclimepaAviaoVoo from "@/assets/gallery/aclimepa-aviao-voo.jpeg";
 
 const galleryImages = [
-  { src: aclimepaAviaoSunset, alt: "ACLIMEPA - Avião ao pôr do sol" },
-  { src: aclimepaAviaoVoo, alt: "ACLIMEPA Brasil - Avião em voo" },
-  { src: aclimepaVerde, alt: "ACLIMEPA Brasil - Logo verde" },
-  { src: aclimepaLaranja, alt: "ACLIMEPA Brasil - Logo laranja" },
-  { src: aclimepaAzul, alt: "ACLIMEPA Brasil - Logo azul" },
+  { src: aclimepaAviaoSunset, alt: "ACLIMEPA - Avião ao pôr do sol", filename: "aclimepa-aviao-sunset.jpeg" },
+  { src: aclimepaAviaoVoo, alt: "ACLIMEPA Brasil - Avião em voo", filename: "aclimepa-aviao-voo.jpeg" },
+  { src: aclimepaVerde, alt: "ACLIMEPA Brasil - Logo verde", filename: "aclimepa-verde.jpeg" },
+  { src: aclimepaLaranja, alt: "ACLIMEPA Brasil - Logo laranja", filename: "aclimepa-laranja.jpeg" },
+  { src: aclimepaAzul, alt: "ACLIMEPA Brasil - Logo azul", filename: "aclimepa-azul.jpeg" },
 ];
 
 export const Gallery = () => {
@@ -45,6 +45,23 @@ export const Gallery = () => {
     setCurrentIndex(index);
   };
 
+  const handleDownload = async (imageSrc: string, filename: string) => {
+    try {
+      const response = await fetch(imageSrc);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erro ao baixar imagem:', error);
+    }
+  };
+
   return (
     <section id="galeria" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
@@ -55,15 +72,15 @@ export const Gallery = () => {
           </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-5xl mx-auto">
           {/* Main Image */}
-          <div className="relative overflow-hidden rounded-2xl shadow-2xl aspect-square md:aspect-video">
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-black/5" style={{ minHeight: '500px' }}>
             {galleryImages.map((image, index) => (
               <img
                 key={index}
                 src={image.src}
                 alt={image.alt}
-                className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out ${
+                className={`absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-in-out ${
                   index === currentIndex 
                     ? "opacity-100 scale-100" 
                     : "opacity-0 scale-105"
@@ -71,8 +88,16 @@ export const Gallery = () => {
               />
             ))}
             
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            {/* Download Button */}
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleDownload(galleryImages[currentIndex].src, galleryImages[currentIndex].filename)}
+              className="absolute bottom-4 right-4 z-10 bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Baixar
+            </Button>
           </div>
 
           {/* Navigation Arrows */}
@@ -110,24 +135,32 @@ export const Gallery = () => {
             ))}
           </div>
 
-          {/* Thumbnails */}
-          <div className="flex justify-center gap-3 mt-6">
+          {/* Thumbnails with Download */}
+          <div className="flex justify-center gap-3 mt-6 flex-wrap">
             {galleryImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`relative overflow-hidden rounded-lg transition-all duration-300 ${
-                  index === currentIndex 
-                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background" 
-                    : "opacity-60 hover:opacity-100"
-                }`}
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-16 h-16 md:w-20 md:h-20 object-cover"
-                />
-              </button>
+              <div key={index} className="relative group">
+                <button
+                  onClick={() => goToSlide(index)}
+                  className={`relative overflow-hidden rounded-lg transition-all duration-300 ${
+                    index === currentIndex 
+                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background" 
+                      : "opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-16 h-16 md:w-20 md:h-20 object-cover"
+                  />
+                </button>
+                <button
+                  onClick={() => handleDownload(image.src, image.filename)}
+                  className="absolute -bottom-1 -right-1 p-1.5 bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md hover:bg-primary/90"
+                  aria-label={`Baixar ${image.alt}`}
+                >
+                  <Download className="h-3 w-3" />
+                </button>
+              </div>
             ))}
           </div>
         </div>
