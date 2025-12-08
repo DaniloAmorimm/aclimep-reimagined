@@ -22,7 +22,7 @@ interface CachedWeather {
 }
 
 const CACHE_KEY = "weather_widget_cache";
-const CACHE_TIME = 15 * 60 * 1000; // 15 min
+const CACHE_TIME = 15 * 60 * 1000; // 15 minutos
 
 const WeatherWidget = () => {
   const [location, setLocation] = useState<LocationData | null>(null);
@@ -30,15 +30,15 @@ const WeatherWidget = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Direção do vento PT-BR
+  // Direção do vento em PT-BR
   const getWindDirection = (deg: number) => {
-    const dirs = [
+    const directions = [
       "N", "NNE", "NE", "ENE",
       "L", "ESE", "SE", "SSE",
       "S", "SSO", "SO", "OSO",
       "O", "ONO", "NO", "NNO"
     ];
-    return dirs[Math.round(deg / 22.5) % 16];
+    return directions[Math.round(deg / 22.5) % 16];
   };
 
   const isNight = () => {
@@ -57,27 +57,6 @@ const WeatherWidget = () => {
     return night ? "🌙" : "🌦️";
   };
 
-  // Reverse geocode → converter coordenadas em cidade
-  const getCityName = async (lat: number, lon: number) => {
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
-      );
-
-      const data = await res.json();
-
-      return (
-        data.address.city ||
-        data.address.town ||
-        data.address.village ||
-        data.address.suburb ||
-        "Sua região"
-      );
-    } catch (e) {
-      return "Sua região";
-    }
-  };
-
   // 1 — Carregar CACHE
   useEffect(() => {
     const saved = localStorage.getItem(CACHE_KEY);
@@ -93,53 +72,37 @@ const WeatherWidget = () => {
     }
   }, []);
 
-  // 2 — Buscar localização via IPAPI + reverse geocode
+  // 2 — Buscar localização (caso não tenha cache)
   useEffect(() => {
     if (location) return;
 
     const fetchLocation = async () => {
       try {
-        let latitude: number | null = null;
-        let longitude: number | null = null;
+        const res = await fetch("https://ipwho.is/");
+        const data = await res.json();
 
-        // 1 — GeoIP (igual UOL)
-        try {
-          const res = await fetch("https://ipapi.co/json/");
-          const data = await res.json();
-
-          if (data && data.latitude && data.longitude) {
-            latitude = data.latitude;
-            longitude = data.longitude;
-            console.log("🌎 GeoIP detectado:", latitude, longitude);
-          }
-        } catch (_) {}
-
-        // 2 — Fallback: GPS do navegador
-        if (!latitude || !longitude) {
-          console.log("📍 Usando GPS do navegador");
-
-          await new Promise<void>((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                latitude = pos.coords.latitude;
-                longitude = pos.coords.longitude;
-                resolve();
-              },
-              () => reject()
-            );
+        if (data.success !== false && data.city) {
+          setLocation({
+            city: data.city,
+            latitude: data.latitude,
+            longitude: data.longitude
           });
+          return;
         }
 
-        if (!latitude || !longitude) throw new Error("Sem localização");
-
-        // 3 — Reverse geocode (pegar nome da cidade)
-        const city = await getCityName(latitude, longitude);
-
-        setLocation({
-          city,
-          latitude,
-          longitude
-        });
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            setLocation({
+              city: "Sua região",
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude
+            });
+          },
+          () => {
+            setError(true);
+            setLoading(false);
+          }
+        );
       } catch (e) {
         console.error("Erro ao localizar:", e);
         setError(true);
@@ -165,6 +128,7 @@ const WeatherWidget = () => {
           &timezone=auto
         `.replace(/\s+/g, "");
 
+
         const res = await fetch(url);
         const data = await res.json();
 
@@ -185,7 +149,6 @@ const WeatherWidget = () => {
 
         setWeather(newWeather);
 
-        // Salvar cache
         localStorage.setItem(
           CACHE_KEY,
           JSON.stringify({
@@ -205,7 +168,7 @@ const WeatherWidget = () => {
     fetchWeather();
   }, [location]);
 
-  // UI
+  // Renderização
   if (loading) {
     return <div className="text-sm text-muted-foreground">Carregando clima...</div>;
   }
@@ -224,4 +187,15 @@ const WeatherWidget = () => {
         <div className="text-muted-foreground text-xs">
           Agora: {weather.temp}°C •{" "}
           Máx: <span className="text-red-500">{weather.tempMax}°C</span> •{" "}
-          Mín: <span className="text-blue
+          Mín: <span className="text-blue-500">{weather.tempMin}°C</span>
+        </div>
+
+        <div className="text-muted-foreground text-xs">
+          Vento: {weather.windspeed} km/h ({getWindDirection(weather.winddirection)})
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default WeatherWidget;
