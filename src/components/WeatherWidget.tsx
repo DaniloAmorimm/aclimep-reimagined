@@ -95,50 +95,63 @@ const WeatherWidget = () => {
     }
   }, []);
 
-  // 2 — Buscar localização via IP + reverse geocode
-  useEffect(() => {
-    if (location) return;
+// 2 — Buscar localização via IPAPI + reverse geocode
+useEffect(() => {
+  if (location) return;
 
-    const fetchLocation = async () => {
+  const fetchLocation = async () => {
+    try {
+      let latitude: number | null = null;
+      let longitude: number | null = null;
+
+      // 1 — TENTAR GEOIP (ipapi.co)
       try {
-        // FIX: usar ?ip= para evitar erro
-        const res = await fetch("https://ipwho.is/?ip=");
-        const ipdata = await res.json();
+        const res = await fetch("https://ipapi.co/json/");
+        const data = await res.json();
 
-        let latitude: number;
-        let longitude: number;
-
-        if (ipdata.success !== false && ipdata.latitude && ipdata.longitude) {
-          latitude = ipdata.latitude;
-          longitude = ipdata.longitude;
-        } else {
-          // fallback navegador
-          await new Promise<void>((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                latitude = pos.coords.latitude;
-                longitude = pos.coords.longitude;
-                resolve();
-              },
-              () => reject()
-            );
-          });
+        if (data && data.latitude && data.longitude) {
+          latitude = data.latitude;
+          longitude = data.longitude;
+          console.log("🌎 GeoIP detectado:", latitude, longitude);
         }
+      } catch (_) {}
 
-        // 👉 Buscar nome da cidade a partir das coordenadas
-        const city = await getCityName(latitude, longitude);
+      // 2 — FALLBACK: navegador (GPS)
+      if (!latitude || !longitude) {
+        console.log("📍 Usando GPS do navegador");
 
-        setLocation({
-          city,
-          latitude,
-          longitude
+        await new Promise<void>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              latitude = pos.coords.latitude;
+              longitude = pos.coords.longitude;
+              resolve();
+            },
+            () => reject()
+          );
         });
-      } catch (e) {
-        console.error("Erro ao localizar:", e);
-        setError(true);
-        setLoading(false);
       }
-    };
+
+      if (!latitude || !longitude) throw new Error("Sem localização");
+
+      // 3 — Reverse geocode para pegar nome da cidade
+      const city = await getCityName(latitude, longitude);
+
+      setLocation({
+        city,
+        latitude,
+        longitude
+      });
+    } catch (e) {
+      console.error("Erro ao localizar:", e);
+      setError(true);
+      setLoading(false);
+    }
+  };
+
+  fetchLocation();
+}, [location]);
+
 
     fetchLocation();
   }, [location]);
