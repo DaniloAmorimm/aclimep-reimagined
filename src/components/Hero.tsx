@@ -50,6 +50,7 @@ export const Hero = () => {
             <Button 
               size="lg" 
               variant="hero"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg"
               onClick={() => scrollToSection('sobre')}
             >
               Saiba Mais
