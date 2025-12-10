@@ -39,14 +39,14 @@ export const Hero = () => {
             Brasileira e Estrangeiras
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Button 
+            {/* <Button 
               size="lg" 
               variant="default"
               className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg"
               onClick={() => scrollToSection('contato')}
             >
               Entre em Contato
-            </Button>
+            </Button> */}
             <Button 
               size="lg" 
               variant="hero"
